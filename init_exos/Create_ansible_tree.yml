@@ -1,0 +1,33 @@
+---
+# create common projets ansible achitecture
+- name: create common architecture
+  hosts: localhost
+  vars:
+    Directories:
+      DirRoles: roles
+      DirGVars: group_vars
+      DirVars: vars
+      DirInvent: inventories
+    Project_path: ""
+    Inventory_filename: myinventory
+    RemoteUser: devops
+  tasks:
+    # - name: show info directory
+    #   debug:
+    #     msg: "VALUE = {{ Directories.DirInvent }}"
+      # loop: "{{ Directories | dict2items }}"
+    - name: create directories
+      file:
+        path: "{{ Project_path }}/{{ item.value }}"
+        state: directory
+      loop: "{{ Directories | dict2items}}"
+
+    - name: create ansible.cfg by template
+      template:
+        src: templates/ansible.cfg.j2
+        dest: "{{ Project_path }}/ansible.cfg"
+
+    - name: create empty inventory file
+      file:
+        path: "{{ Project_path }}/{{ Directories.DirInvent }}/{{ Inventory_filename }}"
+        state: touch

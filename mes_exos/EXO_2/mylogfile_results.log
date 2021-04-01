@@ -1,0 +1,61 @@
+[
+    {
+        "ansible_loop_var": "item",
+        "changed": false,
+        "cmd": "python2 --version",
+        "failed": true,
+        "invocation": {
+            "module_args": {
+                "_raw_params": "python2 --version",
+                "_uses_shell": false,
+                "argv": null,
+                "chdir": null,
+                "creates": null,
+                "executable": null,
+                "removes": null,
+                "stdin": null,
+                "stdin_add_newline": true,
+                "strip_empty_ends": true,
+                "warn": true
+            }
+        },
+        "item": "python2",
+        "msg": "[Errno 2] Aucun fichier ou dossier de ce type: b'python2': b'python2'",
+        "rc": 2
+    },
+    {
+        "ansible_loop_var": "item",
+        "changed": true,
+        "cmd": [
+            "python3",
+            "--version"
+        ],
+        "delta": "0:00:00.004048",
+        "end": "2021-03-04 16:38:34.840975",
+        "failed": false,
+        "invocation": {
+            "module_args": {
+                "_raw_params": "python3 --version",
+                "_uses_shell": false,
+                "argv": null,
+                "chdir": null,
+                "creates": null,
+                "executable": null,
+                "removes": null,
+                "stdin": null,
+                "stdin_add_newline": true,
+                "strip_empty_ends": true,
+                "warn": true
+            }
+        },
+        "item": "python3",
+        "rc": 0,
+        "start": "2021-03-04 16:38:34.836927",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "Python 3.6.8",
+        "stdout_lines": [
+            "Python 3.6.8"
+        ]
+    }
+]

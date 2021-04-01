@@ -1,0 +1,17 @@
+FROM centos:7
+ARG ansible_user="devops"
+ARG ansible_dir="/data"
+RUN yum update -y \
+  && yum install python3 -y #  install python package \
+  && useradd -G wheel -D $ansible_user  # create devops user and add in wheel group \
+  && # install, config and start sshd \
+  && yum install -y openssh-server.$(uname -i) openssh-client.$(uname -i)\
+  # && systemctl start sshd \
+  && mkdir $ansible_dir \
+  && chown $ansible_user: $ansible_dir \
+  && chmod 770 $ansible_dir
+
+# CMD ["bash"]
+CMD ["/usr/sbin/sshd", "-D"]
+
+EXPOSE 22

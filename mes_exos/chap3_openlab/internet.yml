@@ -1,0 +1,4 @@
+---
+- name: enable internet services
+  hosts: all
+  tasks:

@@ -1,0 +1,54 @@
+---
+- name: create docker environment
+  hosts: localhost
+  vars:
+    exo_name: test1
+    exo_path: "../mes_exos/{{ exo_name }}"
+    image_version: v3
+  tasks:
+    - name: check docker is started
+      become: yes
+      service:
+        name: docker
+        state: started
+      tags: checking
+
+    - name: check if docker and docker-compose module for pyhton is installed
+      become: yes
+      pip:
+        name: "{{ item }}"
+      loop:
+        - docker
+        - docker-compose
+      tags: checking
+
+
+    - name: build centos base image
+      docker_image:
+        build:
+          path: ./docker_images/base
+        name: bomberdkr/centos7_rh294
+        repository: bomberdkr/centos7_rh294
+        tag: "{{ image_version }}"
+        push: yes
+        source: build
+        force_source: true
+
+    - name: kill loaded environment
+      docker_container:
+        name: "{{ exo_name }}"
+        state: absent
+
+    - name: load environment
+      docker_container:
+        name: "{{ exo_name }}"
+        image: "bomberdkr/centos7_rh294:{{ image_version }}"
+        state: started
+        volumes:
+          - "{{ exo_path }}/data:/data"
+        # publication des ports [IP_host]:[PORT_host]:[PORT_contairer]
+        ports:
+          - 0.0.0.0:22001:22
+        detach: true
+        tty: true
+        # command: sleep 1d

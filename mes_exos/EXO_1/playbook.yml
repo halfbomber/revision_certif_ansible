@@ -1,0 +1,11 @@
+---
+# affcher des information basic a l'aide des facts et de debug + msg
+- name: test configue
+  hosts: all
+  become: true
+  tasks:
+    - name: get hostname
+      debug:
+        msg:
+          - "the hostname server is  {{ ansible_facts['hostname'] }}"
+          - "and is IP address is {{ ansible_facts['default_ipv4']['address']

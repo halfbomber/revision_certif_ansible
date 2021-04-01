@@ -1,0 +1,36 @@
+---
+# creation de l'utilisateur 'devops' pour le management des hosts non parametré
+
+- name: create the defaut config for "devops" user
+  hosts: all
+  vars:
+    - python_packages:
+      - python2
+      - python3
+
+  tasks:
+    # - name: make try  block
+      # block:
+    - name: make facts packages
+      package_facts:
+        manager: auto
+
+    - name: check si le paquet de python exist
+      command: "{{ item }} --version"
+      ignore_errors: true
+      register: PythonInfo
+      loop: "{{ python_packages }}"
+
+      # rescue:
+    - name: show PythonInfo
+      debug:
+        var: PythonInfo
+
+    - name: if fail stop the playbook
+    #   fail:
+    #       msg: "FAILED MESSAGE"
+    #   when: PythonInfo is failed
+      debug:
+        msg: " THE PKGS IS NOT PRESENT : {{ item.item }} \n"
+      when: item.failed
+      loop: "{{ PythonInfo | json_query('results[*]') }}"
